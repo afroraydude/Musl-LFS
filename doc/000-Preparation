@@ -87,19 +87,19 @@ EOF
 
 
 case $(uname -m) in
-   x86_64) export MLFS_TARGET="x86_64-mlfs-linux-musl"
+   x86_64) export MLFS_TARGET="x86_64-linux-musl"
            export MLFS_ARCH="x86"
            export MLFS_CPU="x86-64"
            ;;
-   i686)   export MLFS_TARGET="i686-mlfs-linux-musl"
+   i686)   export MLFS_TARGET="i686-linux-musl"
            export MLFS_ARCH="x86"
            export MLFS_CPU="i686"
            ;;
-   armv7l) export MLFS_TARGET="armv7l-mlfs-linux-musl"
+   armv7l) export MLFS_TARGET="armv7l-linux-musl"
            export MLFS_ARCH="arm"
            export MLFS_CPU="armv7-a"
            ;;
-   armv6l) export MLFS_TARGET="armv6l-lfs-linux-musl"
+   armv6l) export MLFS_TARGET="armv6l-linux-musl"
            export MLFS_ARCH="arm"
            export MLFS_CPU="armv6"
            ;;
