@@ -3,15 +3,16 @@
 
 # Set $MLFS_TARGET should match the triplet under /tools
 case $(uname -m) in
-  x86_64) export MLFS_TARGET="x86_64-mlfs-linux-musl"
+  x86_64) export ARCH="x86_64"
           ;;
-  i686)   export MLFS_TARGET="i686-mlfs-linux-musl"
+  i686)   export ARCH="i686"
           ;;
-  armv7l) export MLFS_TARGET="armv7l-mlfs-linux-musleabihf"
+  armv7l) export ARCH="armv7l"
           ;;
-  armv6l) export MLFS_TARGET="armv6l-mlfs-linux-musleabihf"
+  armv6l) export ARCH="armv6l"
           ;;
 esac
+export MLFS_TARGET="$ARCH-mlfs-linux-musl"
 
 mv -v /tools/bin/{ld,ld-old}
 mv -v /tools/${MLFS_TARGET}/bin/{ld,ld-old}
@@ -33,6 +34,7 @@ gcc -dumpspecs | sed -e 's@/tools@@g'                   \
 
 mv -vf tempspecfile $SPECFILE &&
 unset SPECFILE
+unset ARCH
 
 # Check the basic functions (compiling and linking) of 
 # the adjusted toolchain are working as expected. To do 

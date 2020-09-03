@@ -4,13 +4,13 @@
 # This section is done in Chroot environment
 
 case $(uname -m) in
-  x86_64) export TRUPLE="x86_64-linux-musl"
+  x86_64) export ARCH="x86_64"
           ;;
-  i686)   export TRUPLE="i686-linux-musl"
+  i686)   export ARCH="i686"
           ;;
-  armv7l) export TRUPLE="armv7l-linux-musleabihf"
+  armv7l) export ARCH="armv7l"
           ;;
-  armv6l) export TRUPLE="armv6l-linux-musleabihf"
+  armv6l) export ARCH="armv6l"
           ;;
 esac
 
@@ -44,16 +44,22 @@ sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {gcc,libiberty}/configure
 mkdir -v build && cd build
 SED=sed  libat_cv_have_ifunc=no       \
 ../configure --prefix=/usr            \
-             --build="${TRUPLE}"\
+             --build="$ARCH-linux-musl"\
              --with-system-zlib       \
              --with-isl \
              --with-linker-hash-style=gnu \
              --enable-languages=c,c++ \
+             --enable-shared \
              --enable-threads=posix \
+             --enable-c99 \
+             --enable-long-long \
              --enable-clocale=generic \
              --enable-languages=c,c++ \
+             --enable-plugins \
              --enable-tls \
+             --enable-lto \
              --enable-libstdcxx-time \
+             --enable-checking=release \
              --enable-fully-dynamic-string \
              --enable-default-pie \
              --enable-default-ssp \
@@ -67,7 +73,7 @@ SED=sed  libat_cv_have_ifunc=no       \
              --disable-symvers \
              --disable-libsanitizer \
              --disable-target-libiberty \
-             --disable-libunwind-exceptions 
+             --disable-libunwind-exceptions \
 
 # Build
 make
@@ -101,6 +107,18 @@ ln -sfv ../../libexec/gcc/$(gcc -dumpmachine)/9.1.0/liblto_plugin.so \
         /usr/lib/bfd-plugins/
 mkdir -pv /usr/share/gdb/auto-load/usr/lib
 mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib
+
+# Modify specsfile:
+# First dump current specfile to a file
+export SPECFILE=`dirname $(gcc -print-libgcc-file-name)`/specs
+gcc -dumpspecs > specs
+
+# Modify specs file to match this:
+# *cpp:
+# %{posix:-D_POSIX_SOURCE} %{pthread:-D_REENTRANT} -I /usr/lib/gcc/$ARCH-linux-musl/9.1.0/include-fixed
+# Install new specs file:
+cp -v specs $SPECFILE
+unset SPECFILE
 
 # Test final system's toolchain:
 echo 'int main(){}' > dummy.c
@@ -137,15 +155,4 @@ grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
 
 # If all is well, remove test files:
 rm -v dummy.c a.out dummy.log
-
-# Build useful utilities
-cc -fpie ../files/musl/getent.c -o getent
-cc -fpie ../files/musl/getconf.c -o getconf
-cc -fpie ../files/musl/iconv.c -o iconv
-
-cp -v getent  /usr/bin/
-cp -v getconf /usr/bin/
-cp -v iconv   /usr/bin/
-cp -v ../files/musl/getent.1   /usr/share/man/man1/
-cp -v ../files/musl/getconf.1  /usr/share/man/man1/
 
