@@ -15,6 +15,6 @@ export STRIP="${MLFS_TARGET}-strip"
 ./configure --build=${MLFS_HOST}  \
             --host=${MLFS_TARGET} \
             --prefix=/tools
-            
+
 # Install to toolchain
 make && make install

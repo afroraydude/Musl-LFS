@@ -1,7 +1,7 @@
 # Prepare Virtual Kernel Filesystems for chroot
 # This section is done by root
 
-export MLFS=/mnt/mlfs
+export MLFS=/wombatlinux
 
 # Create directories and nodes
 mkdir -pv $MLFS/{dev,proc,sys,run}

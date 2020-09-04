@@ -5,7 +5,7 @@ rm -rvf /tmp/*
 exit
 
 # Re-enter chroot:
-export MLFS=/mnt/mlfs
+export MLFS=/wombatlinux
 
 chroot "$MLFS" /usr/bin/env -i          \
     HOME=/root TERM="$TERM"            \

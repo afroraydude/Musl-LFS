@@ -2,10 +2,7 @@
 # If building on a seperate partition, create the file system and mount it.
 # Set #MLFS to the mount point. Example:
 # Perform as root:
-mkfs.etx4 /dev/sdXY
-mkdir -pv /mnt/mlfs
-mount /dev/sdXY /mnt/mlfs
-export MLFS=/mnt/mlfs
+export MLFS=/wombatlinux
 
 # Create directories to build tools and link them to host's root directory:
 mkdir -v $MLFS/cross-tools
@@ -55,7 +52,7 @@ EOF
 cat > ~/.bashrc << "EOF"
 set +h
 umask 022
-MLFS=/mnt/mlfs
+MLFS=/wombatlinux
 LC_ALL=POSIX
 PATH=/cross-tools/bin:/tools/bin:/bin:/usr/bin
 export MLFS LC_ALL PATH
