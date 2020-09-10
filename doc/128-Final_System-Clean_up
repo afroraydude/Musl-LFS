@@ -14,12 +14,12 @@ chroot "$MLFS" /usr/bin/env -i          \
     /bin/bash --login
 
 # Now remove unecessary files:
-rm -fv /usr/lib/lib{bfd,opcodes}.a
-rm -fv /usr/lib/libbz2.a
-rm -fv /usr/lib/lib{com_err,e2p,ext2fs,ss}.a
-rm -fv /usr/lib/libltdl.a
-rm -fv /usr/lib/libfl.a
-rm -fv /usr/lib/libz.a
+rm -f /usr/lib/lib{bfd,opcodes}.a
+rm -f /usr/lib/libbz2.a
+rm -f /usr/lib/lib{com_err,e2p,ext2fs,ss}.a
+rm -f /usr/lib/libltdl.a
+rm -f /usr/lib/libfl.a
+rm -f /usr/lib/libz.a
 find /usr/lib /usr/libexec -name \*.la -delete
 
 # It is also safe to remove /tools and /cross-tools directories as they're not required anymore

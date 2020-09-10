@@ -1,0 +1,3 @@
+chroot "$MLFS" /usr/bin/zsh --login +h
+
+export PATH=/bin:/usr/bin:/sbin:/usr/sbin:/tools/bin

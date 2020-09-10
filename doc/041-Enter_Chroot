@@ -10,5 +10,6 @@ chroot "$MLFS" /tools/bin/env -i \
 
 # remake patches and files symlink
 cd /sources
+rm -rf /sources/patches /sources/files
 ln -s /patches /sources/patches
 ln -s /files /sources/files
